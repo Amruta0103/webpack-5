@@ -1,26 +1,42 @@
 import Logo from "./logo.svg";
 
-let root
+const root = document.getElementById("root");
+const name = "Amruta";
+let route;
 
-function init(){
-  const button = document.getElementById("root");
-  const root = document.getElementById("root");
+function init() {
   root.innerHTML = `
-  <img src="${Logo}" alt="build icon"/>
-  <h1> Yay! Learning Web Tooling Today! </h1>
-  <button id="#about>About</button>
-  ${App({name:"Amruta"})}
+  <img src="${Logo}" alt="build icon" />
+  <h1>vanillaJS app Builder</h1>
+  <button id="about"> About </button>
+  <button id="programs"> Programs </button>
+  <div id="route"></div>
   `;
+
+  route = document.querySelector("#route");
+
+  document.querySelector("#about").addEventListener("click",showAboutPage);
+
 }
 
-init();
-
-const button = doc.querySelector("#about");
-button.addEventListener("click", loadAbout);
-
-function loadAbout(){
-  return ("./App").then(({default: App}) => {
-    const about = App({name: "Amruta"});
-    document.querySelector("route").innerHTML = about
-  })
+function showLoader(root){
+  const loader = document.createElement("div");
+  loader.innerText = "loading..";
+  root.appendChild(loader);
+  return loader;
 }
+
+function hideLoader(root,loader) {
+  root.removeChild(loader);
+}
+
+function showAboutPage(event){
+  const loader = showLoader(root);
+
+  import("./App").then(({default: App}) =>{
+    hideLoader(root,loader);
+    route.innerHTML = App({ name });
+  });
+}
+
+init()
